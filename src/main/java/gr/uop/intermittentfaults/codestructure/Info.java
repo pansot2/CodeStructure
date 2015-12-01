@@ -71,6 +71,7 @@ public class Info implements Comparable<Info> {
     
     public void addDependancyInfo(DependancyInfo dependentOn) {
         this.dependentOn.add(dependentOn);
+        dependentOn.setParent(this);
     }
     
     public void removeDependancyInfo(DependancyInfo dependentOn) {
@@ -87,6 +88,7 @@ public class Info implements Comparable<Info> {
     
     public void addDependancyOf(DependancyInfo dependancyOf) {
         this.dependancyOf.add(dependancyOf);
+        dependancyOf.setParent(this);
     }
     
     public void removeDependancyOf(DependancyInfo dependancyOf) {

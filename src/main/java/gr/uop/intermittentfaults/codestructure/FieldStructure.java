@@ -5,22 +5,25 @@
  */
 package gr.uop.intermittentfaults.codestructure;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Panos
  */
-class FieldStructure implements FieldParamMethodStructure,Comparable<FieldStructure> {
+public class FieldStructure implements FieldParamMethodStructure,Comparable<FieldStructure> {
     private String fieldName;
-    private Info fieldInfo;
+    private String fieldType;
+    private ArrayList<Info> fieldInfo;
     private ClassStructure parent;
 
     public FieldStructure() {
         this.fieldName = null;
-        this.fieldInfo = new Info();
+        this.fieldInfo = new ArrayList<>();
         this.parent = null;
     }
 
-    public FieldStructure(String fieldName, Info fieldInfo, ClassStructure parent) {
+    public FieldStructure(String fieldName, ArrayList<Info> fieldInfo, ClassStructure parent) {
         this.fieldName = fieldName;
         this.fieldInfo = fieldInfo;
         this.parent = parent;
@@ -34,12 +37,29 @@ class FieldStructure implements FieldParamMethodStructure,Comparable<FieldStruct
         this.fieldName = fieldName;
     }
 
-    public Info getFieldInfo() {
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(String fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public ArrayList<Info> getFieldInfo() {
         return fieldInfo;
     }
 
-    public void setFieldInfo(Info fieldInfo) {
+    public void setFieldInfo(ArrayList<Info> fieldInfo) {
         this.fieldInfo = fieldInfo;
+    }
+    
+    public void addFieldInfo(Info fieldInfo) {
+        this.fieldInfo.add(fieldInfo);
+        fieldInfo.setParent(this);
+    }
+
+    public void removeFieldInfo(Info fieldInfo) {
+        this.fieldInfo.remove(fieldInfo);
     }
 
     public ClassStructure getParent() {
@@ -53,7 +73,11 @@ class FieldStructure implements FieldParamMethodStructure,Comparable<FieldStruct
     public void printFieldStructure() {
         System.out.println("----- FIELD STRUCTURE -----");
         System.out.println("Field " + fieldName);
-        fieldInfo.printInfo();
+        System.out.println("Field Tyoe " + fieldType);
+        System.out.println("FIELD INFO : ");
+        for (Info info : fieldInfo) {
+            info.printInfo();
+        }
     }
     
     @Override
@@ -65,6 +89,8 @@ class FieldStructure implements FieldParamMethodStructure,Comparable<FieldStruct
         }else if (!this.fieldInfo.equals(fStructure2.getFieldInfo())) {
             equal = -1;
         }else if (this.fieldName.compareTo(fStructure2.getFieldName()) != 0) {
+            equal = -1;
+        }else if (this.fieldType.compareTo(fStructure2.getFieldType()) != 0) {
             equal = -1;
         }
         

@@ -13,22 +13,26 @@ import java.util.ArrayList;
  */
 public class MethodStructure implements FieldParamMethodStructure,Comparable<MethodStructure>{
     private String methodName;
-    private Info methodInfo;
+    private String methodReturnType;
+    private ArrayList<Info> methodInfo;
     private ArrayList<ParameterStructure> parameters;
+    private ArrayList<BlockStructure> blocks;
     private ClassStructure parent;
 
     public MethodStructure() {
         this.methodName = null;
-        this.methodInfo = new Info();
+        this.methodInfo = new ArrayList<>();
         this.parameters = new ArrayList<>();
         this.parent = null;
+        this.blocks = new ArrayList<>();
     }
 
-    public MethodStructure(String methodName, Info methodInfo, ArrayList<ParameterStructure> parameters, ClassStructure parent) {
+    public MethodStructure(String methodName, ArrayList<Info> methodInfo, ArrayList<ParameterStructure> parameters, ClassStructure parent, ArrayList<BlockStructure> blocks) {
         this.methodName = methodName;
         this.methodInfo = methodInfo;
         this.parameters = parameters;
         this.parent = parent;
+        this.blocks = blocks;
     }
 
     public String getMethodName() {
@@ -39,12 +43,29 @@ public class MethodStructure implements FieldParamMethodStructure,Comparable<Met
         this.methodName = methodName;
     }
 
-    public Info getMethodInfo() {
+    public String getMethodReturnType() {
+        return methodReturnType;
+    }
+
+    public void setMethodReturnType(String methodReturnType) {
+        this.methodReturnType = methodReturnType;
+    }
+
+    public ArrayList<Info> getMethodInfo() {
         return methodInfo;
     }
 
-    public void setMethodInfo(Info methodInfo) {
+    public void setMethodInfo(ArrayList<Info> methodInfo) {
         this.methodInfo = methodInfo;
+    }
+    
+    public void addMethodInfo(Info methodInfo) {
+        this.methodInfo.add(methodInfo);
+        methodInfo.setParent(this);
+    }
+
+    public void removeMethodInfo(Info methodInfo) {
+        this.methodInfo.remove(methodInfo);
     }
 
     public ArrayList<ParameterStructure> getParameters() {
@@ -57,12 +78,30 @@ public class MethodStructure implements FieldParamMethodStructure,Comparable<Met
     
     public void addParameterStructure(ParameterStructure parameterStructure) {
         this.parameters.add(parameterStructure);
+        parameterStructure.setParent(this);
     }
 
     public void removeParameterStructure(ParameterStructure parameterStructure) {
         this.parameters.remove(parameterStructure);
     }
+
+    public ArrayList<BlockStructure> getBlock() {
+        return blocks;
+    }
+
+    public void setBlock(ArrayList<BlockStructure> blocks) {
+        this.blocks = blocks;
+    }
     
+    public void addBlockStructure(BlockStructure blockStructure) {
+        this.blocks.add(blockStructure);
+        blockStructure.setMethodParent(this);
+    }
+
+    public void removeBlockStructure(BlockStructure blockStructure) {
+        this.blocks.remove(blockStructure);
+    }
+
     public ClassStructure getParent() {
         return parent;
     }
@@ -74,11 +113,20 @@ public class MethodStructure implements FieldParamMethodStructure,Comparable<Met
     public void printMethodStructure() {
         System.out.println("----- METHOD STRUCTURE -----");
         System.out.println("Method " + methodName);
-        methodInfo.printInfo();
-        System.out.println("PARAMETERSTRUCTURE : ");
+        System.out.println("Method Return Type " + methodReturnType);
+        System.out.println("FIELD INFO : ");
+        for (Info info : methodInfo) {
+            info.printInfo();
+        }
+        System.out.println("PARAMETER STRUCTURE : ");
         for (ParameterStructure parameter : parameters) {
             parameter.printParameterStructure();
         }
+        System.out.println("BLOCK STRUCTURE : ");
+        for (BlockStructure block : blocks) {
+            block.printBlockStructure();
+        }
+
     }
     
     @Override

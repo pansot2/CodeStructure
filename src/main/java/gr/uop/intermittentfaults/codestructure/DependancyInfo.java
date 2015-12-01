@@ -18,6 +18,7 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
     private String method;
     private String name;
     private int line;
+    private Info dependencyInfoNode;
     private Info parent;
 
     public DependancyInfo() {
@@ -30,9 +31,10 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
         this.name = null;
         this.line = -1;
         this.parent = null;
+        this.dependencyInfoNode = null;
     }
 
-    public DependancyInfo(boolean isParam, boolean isField, boolean isMethod, String file, String className, String method, String name, int line, Info parent) {
+    public DependancyInfo(boolean isParam, boolean isField, boolean isMethod, String file, String className, String method, String name, int line, Info parent, Info dependencyInfoNode) {
         this.isParam = isParam;
         this.isField = isField;
         this.isMethod = isMethod;
@@ -42,6 +44,7 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
         this.name = name;
         this.line = line;
         this.parent = parent;
+        this.dependencyInfoNode = dependencyInfoNode;
     }
 
     public boolean isIsParam() {
@@ -114,6 +117,14 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
 
     public void setParent(Info parent) {
         this.parent = parent;
+    }
+
+    public Info getDependencyInfoNode() {
+        return dependencyInfoNode;
+    }
+
+    public void setDependencyInfoNode(Info dependencyInfoNode) {
+        this.dependencyInfoNode = dependencyInfoNode;
     }
 
     public void printDependancyInfo() {

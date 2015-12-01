@@ -70,10 +70,12 @@ public class ClassStructure implements Comparable<ClassStructure> {
     
     public void removeFieldStructure(FieldStructure fStructure) {
         this.fields.remove(fStructure);
+        fStructure.setParent(this);
     }
     
     public void addMethodStructure(MethodStructure mStructure) {
         this.methods.add(mStructure);
+        mStructure.setParent(this);
     }
     
     public void removeMethodStructure(MethodStructure mStructure) {

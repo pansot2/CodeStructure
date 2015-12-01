@@ -5,22 +5,25 @@
  */
 package gr.uop.intermittentfaults.codestructure;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Panos
  */
 public class ParameterStructure implements FieldParamMethodStructure,Comparable<ParameterStructure>{
     private String parameterName;
-    private Info parameterInfo;
+    private String parameterType;
+    private ArrayList<Info> parameterInfo;
     private MethodStructure parent;
 
     public ParameterStructure() {
         this.parameterName = null;
-        this.parameterInfo = new Info();
+        this.parameterInfo = new ArrayList<>();
         this.parent = null;
     }
 
-    public ParameterStructure(String parameterName, Info parameterInfo, MethodStructure parent) {
+    public ParameterStructure(String parameterName, ArrayList<Info> parameterInfo, MethodStructure parent) {
         this.parameterName = parameterName;
         this.parameterInfo = parameterInfo;
         this.parent = parent;
@@ -34,12 +37,29 @@ public class ParameterStructure implements FieldParamMethodStructure,Comparable<
         this.parameterName = parameterName;
     }
 
-    public Info getParameterInfo() {
+    public String getParameterType() {
+        return parameterType;
+    }
+
+    public void setParameterType(String parameterType) {
+        this.parameterType = parameterType;
+    }
+
+    public ArrayList<Info> getParameterInfo() {
         return parameterInfo;
     }
 
-    public void setParameterInfo(Info parameterInfo) {
+    public void setParameterInfo(ArrayList<Info> parameterInfo) {
         this.parameterInfo = parameterInfo;
+    }
+    
+    public void addParameterInfo(Info parameterInfo) {
+        this.parameterInfo.add(parameterInfo);
+        parameterInfo.setParent(this);
+    }
+
+    public void removeParameterInfo(Info parameterInfo) {
+        this.parameterInfo.remove(parameterInfo);
     }
 
     public MethodStructure getParent() {
@@ -53,7 +73,11 @@ public class ParameterStructure implements FieldParamMethodStructure,Comparable<
     public void printParameterStructure() {
         System.out.println("----- PARAMETER STRUCTURE -----");
         System.out.println("Parameter " + parameterName);
-        parameterInfo.printInfo();
+        System.out.println("Parameter Type " + parameterType);
+        System.out.println("PARAMETER INFO : ");
+        for (Info info : parameterInfo) {
+            info.printInfo();
+        }
     }
     
     @Override

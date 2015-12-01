@@ -33,6 +33,7 @@ public class FilesToParse {
 
     public void addFileStructure(FileStructure fStructure) {
         this.files.add(fStructure);
+        fStructure.setParent(this);
     }
 
     public void removeFileStructure(FileStructure fStructure) {

@@ -66,6 +66,7 @@ public class FileStructure implements Comparable<FileStructure> {
 
     public void addClassStructure(ClassStructure cStructure) {
         this.classes.add(cStructure);
+        cStructure.setParent(this);
     }
 
     public void removeClassStructure(ClassStructure cStructure) {
