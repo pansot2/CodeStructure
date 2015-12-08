@@ -6,6 +6,11 @@
 package gr.uop.intermittentfaults.codestructure;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -16,6 +21,7 @@ public class FileStructure implements Comparable<FileStructure> {
     private ArrayList<ClassStructure> classes;
     private String fileName;
     private String filePath;
+    private Map<Integer,ArrayList<Info>> lineDictionary;
     private FilesToParse parent;
 
     public FileStructure() {
@@ -23,13 +29,15 @@ public class FileStructure implements Comparable<FileStructure> {
         this.fileName = null;
         this.filePath = null;
         this.parent = null;
+        this.lineDictionary = new HashMap<>();
     }
 
-    public FileStructure(ArrayList<ClassStructure> classes, String fileName, String filePath, FilesToParse parent) {
+    public FileStructure(ArrayList<ClassStructure> classes, String fileName, String filePath, FilesToParse parent, Map<Integer,ArrayList<Info>> lineDictionary) {
         this.classes = classes;
         this.fileName = fileName;
         this.filePath = filePath;
         this.parent = parent;
+        this.lineDictionary = lineDictionary;
     }
 
     public ArrayList<ClassStructure> getClasses() {
@@ -73,12 +81,63 @@ public class FileStructure implements Comparable<FileStructure> {
         this.classes.remove(cStructure);
     }
 
+    public Map<Integer, ArrayList<Info>> getLineDictionary() {
+        return lineDictionary;
+    }
+
+    public void setLineDictionary(Map<Integer, ArrayList<Info>> lineDictionary) {
+        this.lineDictionary = lineDictionary;
+    }
+    
+    public void addInfoInLineDictionary(int line, Info info) {
+        ArrayList<Info> infoArray = this.lineDictionary.get(line);
+        if (infoArray == null) {
+            infoArray = new ArrayList<>();
+            infoArray.add(info);
+            this.lineDictionary.put(line, infoArray);
+        }else {
+            infoArray.add(info);
+        }
+    }
+
     public void printFileStructure() {
         System.out.println("----- FILE STRUCTURE -----");
         System.out.println("CLASSTRUCTURES : ");
         for (ClassStructure myClass : classes) {
             System.out.println("File " + fileName + " , Path : " + filePath);
             myClass.printClassStructure();
+        }
+    }
+    
+    public void printLineDictionary(){
+        System.out.println("LINE DICTIONARY OF FILE " + fileName);
+        
+        Map<Integer, ArrayList<Info>> treeMap = new TreeMap<Integer, ArrayList<Info>>(
+	    new Comparator<Integer>() {
+                @Override
+		public int compare(Integer o1, Integer o2) {
+		    return o1.compareTo(o2);
+		}
+            });
+	treeMap.putAll(this.lineDictionary);
+        
+        for (Map.Entry<Integer, ArrayList<Info>> entry : treeMap.entrySet()) {
+            System.out.println("line : " + entry.getKey());
+            ArrayList<Info> infoArray = entry.getValue();
+            for (Info info : infoArray) {
+                if(info.getParent() instanceof FieldStructure) {
+                    System.out.println(((FieldStructure)info.getParent()).getFieldName());
+                }else if(info.getParent() instanceof VariableStructure) {
+                    System.out.println(((VariableStructure)info.getParent()).getVariableName());
+                }else if(info.getParent() instanceof ParameterStructure) {
+                    System.out.println(((ParameterStructure)info.getParent()).getParameterName());
+                }else if(info.getParent() instanceof MethodStructure) {
+                    System.out.println(((MethodStructure)info.getParent()).getMethodName());
+                }
+                
+            }
+            
+            
         }
     }
 

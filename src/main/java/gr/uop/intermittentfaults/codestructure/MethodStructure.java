@@ -114,7 +114,7 @@ public class MethodStructure implements FieldParamMethodStructure,Comparable<Met
         System.out.println("----- METHOD STRUCTURE -----");
         System.out.println("Method " + methodName);
         System.out.println("Method Return Type " + methodReturnType);
-        System.out.println("FIELD INFO : ");
+        System.out.println("METHOD INFO : ");
         for (Info info : methodInfo) {
             info.printInfo();
         }

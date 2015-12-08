@@ -10,5 +10,5 @@ package gr.uop.intermittentfaults.codestructure;
  * @author Panos
  */
 public interface FieldParamMethodStructure {
-    
 }
+ 

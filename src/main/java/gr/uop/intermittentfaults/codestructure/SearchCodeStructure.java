@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Panos
  */
 public class SearchCodeStructure {
-    public static Info SearchFieldOrVariable(String name, BlockStructure bs) {
+    public static Info searchFieldOrVariable(String name, BlockStructure bs) {
         Info info = null;
         
         // Search current block for existent variables
@@ -64,7 +64,7 @@ public class SearchCodeStructure {
     }
     
     
-    public static ClassStructure SearchClass(String className, ArrayList<FileStructure> fileStructures) {
+    public static ClassStructure searchClass(String className, ArrayList<FileStructure> fileStructures) {
         ClassStructure classStructure = null;
         
         if (fileStructures != null) {
@@ -80,7 +80,7 @@ public class SearchCodeStructure {
     }
     
     
-    public static Info SearchMethod(String name, ClassStructure cs ) {
+    public static Info searchMethod(String name, ClassStructure cs ) {
         Info info = null;
         
         if (cs!=null) {
@@ -97,4 +97,17 @@ public class SearchCodeStructure {
         return info;
     }
     
+    public static Info searchMethodInAllFiles(String name, ArrayList<FileStructure> fileStructures) {
+        Info info = null;
+         
+        if (fileStructures != null) {
+            for (FileStructure fstr : fileStructures) {
+                info = searchMethod(name, fstr.getClasses().get(0));
+                if(info != null) 
+                    return info;
+            }
+        }
+        
+        return info;
+    }
 }

@@ -13,6 +13,7 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
     private boolean isParam;
     private boolean isField;
     private boolean isMethod;
+    private boolean isVariable;
     private String file;
     private String className;
     private String method;
@@ -25,6 +26,7 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
         this.isParam = false;
         this.isField = false;
         this.isMethod = false;
+        this.isVariable = false;
         this.file = null;
         this.className = null;
         this.method = null;
@@ -34,10 +36,11 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
         this.dependencyInfoNode = null;
     }
 
-    public DependancyInfo(boolean isParam, boolean isField, boolean isMethod, String file, String className, String method, String name, int line, Info parent, Info dependencyInfoNode) {
+    public DependancyInfo(boolean isParam, boolean isVariable, boolean isField, boolean isMethod, String file, String className, String method, String name, int line, Info parent, Info dependencyInfoNode) {
         this.isParam = isParam;
         this.isField = isField;
         this.isMethod = isMethod;
+        this.isVariable = isVariable;
         this.file = file;
         this.className = className;
         this.method = method;
@@ -53,6 +56,14 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
 
     public void setIsParam(boolean isParam) {
         this.isParam = isParam;
+    }
+
+    public boolean isIsVariable() {
+        return isVariable;
+    }
+
+    public void setIsVariable(boolean isVariable) {
+        this.isVariable = isVariable;
     }
 
     public boolean isIsField() {
@@ -129,10 +140,10 @@ public class DependancyInfo implements Comparable<DependancyInfo> {
 
     public void printDependancyInfo() {
         System.out.println("----- DEPENDENCY INFO -----");
-        System.out.println("name : " + name + " ,isParam : " + isParam 
-                + " ,isField : " + isField + " ,file : " + file 
+        System.out.println("name : " + name + " ,isParam : " + isParam + " ,isMethod : " + isMethod
+                + " ,isField : " + isField + " ,isVariable : " + isVariable + " ,file : " + file 
                 + " ,className : " + className + " ,method : " + method 
-                + " ,line : " + line);
+                + " ,line : " + line + " ,dependencyInfoNode : " + dependencyInfoNode.getClassName() + " " + dependencyInfoNode.getLine());
     }
     
     @Override
